@@ -10,7 +10,7 @@ El servidor tiene una carpeta asignada en el servidor para llevar el control de 
 Por ejemplo: C:\RootServer
 
 A partir de esta carpeta, clientes pueden crear archivos y directorios. 
-    * Los clientes al conectarse al servidor, les debe aparecer en GUI los archivos y directorios que tiene el servidor remoto.
+* Los clientes al conectarse al servidor, les debe aparecer en GUI los archivos y directorios que tiene el servidor remoto.
     * Los clientes pueden modificar la estructura de directorios. Esta modificación se debe programar a los clientes que están conectados con el servidor.
     * Los clientes deben notificar al servidor que quieren desmontar el FS, asi el servidor ya no realiza actualizaciones a su estructura.
     * Los archivos son de texto y editables.  	
