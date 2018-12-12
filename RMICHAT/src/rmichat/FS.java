@@ -5,16 +5,20 @@
  */
 package rmichat;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Enumeration;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
-import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
-import javax.swing.tree.TreeNode;
+import org.apache.commons.io.FileUtils;
 
 /**
  *
@@ -47,10 +51,27 @@ public class FS extends javax.swing.JFrame {
     private void initComponents() {
 
         FS_Options = new javax.swing.JPopupMenu();
+        FS_OpenFile = new javax.swing.JMenuItem();
         FS_CreateFile = new javax.swing.JMenuItem();
         FS_CreateDirectory = new javax.swing.JMenuItem();
+        FS_Delete = new javax.swing.JMenuItem();
+        jd_File = new javax.swing.JDialog();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jta_FileContent = new javax.swing.JTextArea();
+        jmb_FileContentOperations = new javax.swing.JMenuBar();
+        Menu_FileContent = new javax.swing.JMenu();
+        FileContent_Save = new javax.swing.JMenuItem();
+        FileContent_Close = new javax.swing.JMenuItem();
         jScrollPane1 = new javax.swing.JScrollPane();
         RMI_FS = new javax.swing.JTree();
+
+        FS_OpenFile.setText("Open File");
+        FS_OpenFile.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                FS_OpenFileActionPerformed(evt);
+            }
+        });
+        FS_Options.add(FS_OpenFile);
 
         FS_CreateFile.setText("Create File");
         FS_CreateFile.addActionListener(new java.awt.event.ActionListener() {
@@ -67,6 +88,53 @@ public class FS extends javax.swing.JFrame {
             }
         });
         FS_Options.add(FS_CreateDirectory);
+
+        FS_Delete.setText("Delete");
+        FS_Delete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                FS_DeleteActionPerformed(evt);
+            }
+        });
+        FS_Options.add(FS_Delete);
+
+        jta_FileContent.setColumns(20);
+        jta_FileContent.setRows(5);
+        jScrollPane2.setViewportView(jta_FileContent);
+
+        Menu_FileContent.setText("File");
+
+        FileContent_Save.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
+        FileContent_Save.setText("Save");
+        FileContent_Save.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                FileContent_SaveActionPerformed(evt);
+            }
+        });
+        Menu_FileContent.add(FileContent_Save);
+
+        FileContent_Close.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Q, java.awt.event.InputEvent.CTRL_MASK));
+        FileContent_Close.setText("Close");
+        FileContent_Close.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                FileContent_CloseActionPerformed(evt);
+            }
+        });
+        Menu_FileContent.add(FileContent_Close);
+
+        jmb_FileContentOperations.add(Menu_FileContent);
+
+        jd_File.setJMenuBar(jmb_FileContentOperations);
+
+        javax.swing.GroupLayout jd_FileLayout = new javax.swing.GroupLayout(jd_File.getContentPane());
+        jd_File.getContentPane().setLayout(jd_FileLayout);
+        jd_FileLayout.setHorizontalGroup(
+            jd_FileLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 779, Short.MAX_VALUE)
+        );
+        jd_FileLayout.setVerticalGroup(
+            jd_FileLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 504, Short.MAX_VALUE)
+        );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -142,7 +210,7 @@ public class FS extends javax.swing.JFrame {
                     DirPath += File.separator;
                 }
             }
-            
+
             DirPath += "/";
 
             File file = new File(DirPath + FileName);
@@ -160,6 +228,12 @@ public class FS extends javax.swing.JFrame {
             } catch (IOException ex) {
                 Logger.getLogger(FS.class.getName()).log(Level.SEVERE, null, ex);
             }
+        }
+
+        try {
+            this.scanFS();
+        } catch (InterruptedException ex) {
+            Logger.getLogger(FS.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_FS_CreateFileActionPerformed
 
@@ -192,7 +266,7 @@ public class FS extends javax.swing.JFrame {
                     DirPath += File.separator;
                 }
             }
-            
+
             DirPath += "/";
 
             File file = new File(DirPath + DirectoryName);
@@ -209,7 +283,101 @@ public class FS extends javax.swing.JFrame {
                 }
             }
         }
+        
+        try {
+            this.scanFS();
+        } catch (InterruptedException ex) {
+            Logger.getLogger(FS.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_FS_CreateDirectoryActionPerformed
+
+    private void FS_OpenFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FS_OpenFileActionPerformed
+        // TODO add your handling code here:
+        String DirPath = "./";
+        Object[] paths = RMI_FS.getSelectionPath().getPath();
+
+        for (int i = 0; i < paths.length; i++) {
+            DirPath += paths[i];
+            if (i + 1 < paths.length) {
+                DirPath += File.separator;
+            }
+        }
+
+        final Path path = Paths.get(DirPath);
+        actualDir = DirPath;
+
+        if (!Files.isExecutable(path)) {
+            String FileContent = "";
+
+            try {
+                for (String line : Files.readAllLines(Paths.get(DirPath), StandardCharsets.UTF_8)) {
+                    FileContent += line + "\n";
+                }
+
+                jta_FileContent.setText(FileContent);
+            } catch (IOException ex) {
+                Logger.getLogger(FS.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+            jd_File.setModal(true);
+            jd_File.pack();
+            jd_File.setLocationRelativeTo(this);
+            jd_File.setVisible(true);
+
+        } else {
+            JOptionPane.showMessageDialog(this, "It's a Directory! ", "OPEN FILE", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_FS_OpenFileActionPerformed
+
+    private void FileContent_SaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FileContent_SaveActionPerformed
+        BufferedWriter writer = null;
+        try {
+            // TODO add your handling code here:
+            File actualFile = new File(actualDir);
+
+            writer = new BufferedWriter(new FileWriter(actualFile, false));
+            writer.write(jta_FileContent.getText());
+            writer.close();
+
+            JOptionPane.showMessageDialog(this, "File Saved! ", "OPEN FILE", JOptionPane.INFORMATION_MESSAGE);
+        } catch (IOException ex) {
+            Logger.getLogger(FS.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                writer.close();
+            } catch (IOException ex) {
+                Logger.getLogger(FS.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }//GEN-LAST:event_FileContent_SaveActionPerformed
+
+    private void FileContent_CloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FileContent_CloseActionPerformed
+        // TODO add your handling code here:
+        jd_File.dispose();
+        jta_FileContent.setText("");
+    }//GEN-LAST:event_FileContent_CloseActionPerformed
+
+    private void FS_DeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FS_DeleteActionPerformed
+        // TODO add your handling code here:
+        final Path path = Paths.get(actualDir);
+        File ActualFile = new File(actualDir);
+
+        if (Files.isExecutable(path)) {
+            try {
+                FileUtils.deleteDirectory(ActualFile);
+                JOptionPane.showMessageDialog(this, "Directory deleted. ", "DELETE DIRECTORY", JOptionPane.ERROR_MESSAGE);
+            } catch (IOException ex) {
+                Logger.getLogger(FS.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            try {
+                Files.delete(path);
+                JOptionPane.showMessageDialog(this, "File deleted. ", "DELETE FILE", JOptionPane.ERROR_MESSAGE);
+            } catch (IOException ex) {
+                Logger.getLogger(FS.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }//GEN-LAST:event_FS_DeleteActionPerformed
 
     /**
      * @param args the command line arguments
@@ -249,16 +417,28 @@ public class FS extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem FS_CreateDirectory;
     private javax.swing.JMenuItem FS_CreateFile;
+    private javax.swing.JMenuItem FS_Delete;
+    private javax.swing.JMenuItem FS_OpenFile;
     private javax.swing.JPopupMenu FS_Options;
+    private javax.swing.JMenuItem FileContent_Close;
+    private javax.swing.JMenuItem FileContent_Save;
+    private javax.swing.JMenu Menu_FileContent;
     private javax.swing.JTree RMI_FS;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JDialog jd_File;
+    private javax.swing.JMenuBar jmb_FileContentOperations;
+    private javax.swing.JTextArea jta_FileContent;
     // End of variables declaration//GEN-END:variables
     DefaultMutableTreeNode nodo_seleccionado;
-    String rootDir = "./Local disk (C:)/";
+    String actualDir = "", rootDir = "./Local disk (C:)/";
 
     public void scanFS() throws InterruptedException {
         File currentDir = new File(rootDir);
-
+        DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode("Local disk (C:)");
+        DefaultTreeModel treeModel = new DefaultTreeModel(rootNode);
+        RMI_FS.setModel(treeModel);
+        
         DefaultTreeModel model = (DefaultTreeModel) RMI_FS.getModel();
         DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
         displayDirectoryContents(currentDir, root);
