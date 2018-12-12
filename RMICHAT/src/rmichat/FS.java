@@ -283,7 +283,7 @@ public class FS extends javax.swing.JFrame {
                 }
             }
         }
-        
+
         try {
             this.scanFS();
         } catch (InterruptedException ex) {
@@ -377,6 +377,12 @@ public class FS extends javax.swing.JFrame {
                 Logger.getLogger(FS.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+
+        try {
+            this.scanFS();
+        } catch (InterruptedException ex) {
+            Logger.getLogger(FS.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_FS_DeleteActionPerformed
 
     /**
@@ -438,7 +444,7 @@ public class FS extends javax.swing.JFrame {
         DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode("Local disk (C:)");
         DefaultTreeModel treeModel = new DefaultTreeModel(rootNode);
         RMI_FS.setModel(treeModel);
-        
+
         DefaultTreeModel model = (DefaultTreeModel) RMI_FS.getModel();
         DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
         displayDirectoryContents(currentDir, root);
