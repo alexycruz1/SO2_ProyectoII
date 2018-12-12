@@ -24,13 +24,13 @@ public class ChatClient {
             String name = s.nextLine().trim();
 
             ChatInterface client = new Chat(name);
-            Registry registry = LocateRegistry.getRegistry("192.168.x.x", 1099);
+            Registry registry = LocateRegistry.getRegistry("192.168.0.102", 8888);
             ChatInterface server = (ChatInterface) registry.lookup("ejemplo");
             
             String msg = "[" + client.getName() + "] conectado!";
             server.send(msg);
             System.out.println("Servicio listo");
-            server.setClient(client);
+            server.addClient(client);
 
             while (true) {
                 msg = s.nextLine().trim();

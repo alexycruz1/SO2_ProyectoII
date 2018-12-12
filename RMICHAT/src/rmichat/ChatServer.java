@@ -28,16 +28,20 @@ public class ChatServer {
             //Public address: 181.115.9.201
             //hostname ip-Adress: 127.0.1.1
             
-            System.setProperty("java.rmi.server.hostname", "192.168.x.x");
-            Registry registry = LocateRegistry.createRegistry(1099);
+//            System.setProperty("java.rmi.server.hostname", "192.168.0.100");
+            Registry registry = LocateRegistry.createRegistry(8888);
             registry.bind("ejemplo", server);
 
             while (true) {
                 String msg = s.nextLine().trim();
-                if (server.getClient() != null) {
-                    ChatInterface client = server.getClient();
+                ArrayList<ChatInterface> clients = server.getClients();
+                if (!clients.isEmpty()) {
+//                    ChatInterface client = server.getClient();
                     msg = "[" + server.getName() + "] " + msg;
-                    client.send(msg);
+                    for (ChatInterface client : clients) {
+                        client.send(msg);
+                    }
+                    
                 }
             }
 

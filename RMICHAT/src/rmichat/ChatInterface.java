@@ -10,6 +10,7 @@ package rmichat;
  * @author xioma
  */
 import java.rmi.*;
+import java.util.ArrayList;
 
 public interface ChatInterface extends Remote {
 
@@ -17,7 +18,7 @@ public interface ChatInterface extends Remote {
 
     public void send(String msg) throws RemoteException;
 
-    public void setClient(ChatInterface c) throws RemoteException;
+    public void addClient(ChatInterface c) throws RemoteException;
 
-    public ChatInterface getClient() throws RemoteException;
+    public ArrayList<ChatInterface> getClients() throws RemoteException;
 }
