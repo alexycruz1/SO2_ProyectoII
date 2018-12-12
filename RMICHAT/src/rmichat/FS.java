@@ -138,7 +138,7 @@ public class FS extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        javax.swing.tree.DefaultMutableTreeNode treeNode1 = new javax.swing.tree.DefaultMutableTreeNode("Local disk (C:)");
+        javax.swing.tree.DefaultMutableTreeNode treeNode1 = new javax.swing.tree.DefaultMutableTreeNode("Our Local Disk C");
         RMI_FS.setModel(new javax.swing.tree.DefaultTreeModel(treeNode1));
         RMI_FS.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -437,11 +437,11 @@ public class FS extends javax.swing.JFrame {
     private javax.swing.JTextArea jta_FileContent;
     // End of variables declaration//GEN-END:variables
     DefaultMutableTreeNode nodo_seleccionado;
-    String actualDir = "", rootDir = "./Local disk (C:)/";
+    String actualDir = "", rootDir = "./Our Local Disk C/";
 
     public void scanFS() throws InterruptedException {
         File currentDir = new File(rootDir);
-        DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode("Local disk (C:)");
+        DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode("Our Local Disk C");
         DefaultTreeModel treeModel = new DefaultTreeModel(rootNode);
         RMI_FS.setModel(treeModel);
 

@@ -158,7 +158,7 @@
         <Component class="javax.swing.JTree" name="RMI_FS">
           <Properties>
             <Property name="model" type="javax.swing.tree.TreeModel" editor="org.netbeans.modules.form.editors2.TreeModelEditor">
-              <TreeModel code="Local disk (C:)"/>
+              <TreeModel code="Our Local Disk C"/>
             </Property>
           </Properties>
           <Events>
