@@ -23,9 +23,9 @@ public class ChatClient {
             System.out.println("Nombre:");
             String name = s.nextLine().trim();
 
-            ChatInterface client = new Chat(name);
+            FS_Interface client = new FS(name, null);
             Registry registry = LocateRegistry.getRegistry("192.168.0.102", 8888);
-            ChatInterface server = (ChatInterface) registry.lookup("ejemplo");
+            FS_Interface server = (FS_Interface) registry.lookup("ejemplo");
             
             String msg = "[" + client.getName() + "] conectado!";
             server.send(msg);

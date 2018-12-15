@@ -3,7 +3,11 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/Universidad/Clases/2018/PERIODO_IV/SISTEMAS%20OPERATIVOS%202/SO2_ProyectoII/RMICHAT/src/rmichat/FS.java</file>
+            <file>file:/home/alexyc/Documents/Sistemas%20Operativos%20II/SO2_ProyectoII/RMICHAT/src/rmichat/FSClient.java</file>
+            <file>file:/home/alexyc/Documents/Sistemas%20Operativos%20II/SO2_ProyectoII/RMICHAT/src/rmichat/ChatServer.java</file>
+            <file>file:/home/alexyc/Documents/Sistemas%20Operativos%20II/SO2_ProyectoII/RMICHAT/src/rmichat/ChatClient.java</file>
+            <file>file:/home/alexyc/Documents/Sistemas%20Operativos%20II/SO2_ProyectoII/RMICHAT/src/rmichat/FS.java</file>
+            <file>file:/home/alexyc/Documents/Sistemas%20Operativos%20II/SO2_ProyectoII/RMICHAT/src/rmichat/FS_Interface.java</file>
         </group>
     </open-files>
 </project-private>
