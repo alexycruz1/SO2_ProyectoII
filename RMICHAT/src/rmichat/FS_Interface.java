@@ -9,6 +9,7 @@ package rmichat;
  *
  * @author xioma
  */
+import java.io.File;
 import java.rmi.*;
 import java.util.ArrayList;
 import javax.swing.tree.DefaultTreeModel;
@@ -28,4 +29,6 @@ public interface FS_Interface extends Remote {
     public void setFS(DefaultTreeModel FSModel) throws RemoteException;
     
     public void createDirectory(String Address, String DirectoryName) throws RemoteException;
+    
+    public void createFile(File newFile) throws RemoteException;
 }

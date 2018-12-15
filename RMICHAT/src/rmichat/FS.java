@@ -10,9 +10,13 @@ package rmichat;
  * @author xioma
  */
 import java.io.File;
+import java.io.IOException;
 import java.rmi.*;
 import java.rmi.server.*;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.tree.DefaultTreeModel;
 
 public class FS extends UnicastRemoteObject implements FS_Interface {
@@ -52,5 +56,17 @@ public class FS extends UnicastRemoteObject implements FS_Interface {
     
     public void createDirectory(String Address, String DirectoryName) {
         new File(Address + DirectoryName).mkdirs();
+    }
+    
+    public void createFile(File newFile) {
+        try {
+            if (newFile.createNewFile()) {
+                JOptionPane.showMessageDialog(null, "File created!", "CREATE FILE", JOptionPane.INFORMATION_MESSAGE);
+            }else {
+                JOptionPane.showMessageDialog(null, "File already exists.", "CREATE FILE", JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(FS.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }

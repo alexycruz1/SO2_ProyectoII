@@ -214,18 +214,15 @@ public class FSClient extends javax.swing.JFrame {
         if (nodo_seleccionado.isRoot()) {
             File file = new File(rootDir + FileName);
 
-            try {
-                if (file.createNewFile() && !"".equals(FileName)) {
-                    JOptionPane.showMessageDialog(this, "File created! ", "CREATE FILE", JOptionPane.INFORMATION_MESSAGE);
-                } else {
-                    if (FileName.equals("")) {
-                        JOptionPane.showMessageDialog(this, "File name required. ", "CREATE FILE", JOptionPane.WARNING_MESSAGE);
-                    } else {
-                        JOptionPane.showMessageDialog(this, "File already exists. ", "CREATE FILE", JOptionPane.ERROR_MESSAGE);
-                    }
+            if (!"".equals(FileName)) {
+                try {
+                    server.createFile(file);
+                    RMI_FS.setModel(server.getFSModel());
+                } catch (RemoteException ex) {
+                    Logger.getLogger(FSClient.class.getName()).log(Level.SEVERE, null, ex);
                 }
-            } catch (IOException ex) {
-                Logger.getLogger(FSClient.class.getName()).log(Level.SEVERE, null, ex);
+            } else {
+                JOptionPane.showMessageDialog(this, "File name required. ", "CREATE FILE", JOptionPane.WARNING_MESSAGE);
             }
         } else {
             String DirPath = "./";
@@ -242,18 +239,15 @@ public class FSClient extends javax.swing.JFrame {
 
             File file = new File(DirPath + FileName);
 
-            try {
-                if (file.createNewFile() && !"".equals(FileName)) {
-                    JOptionPane.showMessageDialog(this, "File created! ", "CREATE FILE", JOptionPane.INFORMATION_MESSAGE);
-                } else {
-                    if (FileName.equals("")) {
-                        JOptionPane.showMessageDialog(this, "File name required. ", "CREATE FILE", JOptionPane.WARNING_MESSAGE);
-                    } else {
-                        JOptionPane.showMessageDialog(this, "File already exists. ", "CREATE FILE", JOptionPane.ERROR_MESSAGE);
-                    }
+            if (!"".equals(FileName)) {
+                try {
+                    server.createFile(file);
+                    RMI_FS.setModel(server.getFSModel());
+                } catch (RemoteException ex) {
+                    Logger.getLogger(FSClient.class.getName()).log(Level.SEVERE, null, ex);
                 }
-            } catch (IOException ex) {
-                Logger.getLogger(FSClient.class.getName()).log(Level.SEVERE, null, ex);
+            } else {
+                JOptionPane.showMessageDialog(this, "File name required. ", "CREATE FILE", JOptionPane.WARNING_MESSAGE);
             }
         }
 
