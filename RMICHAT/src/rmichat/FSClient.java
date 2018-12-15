@@ -40,6 +40,7 @@ public class FSClient extends javax.swing.JFrame {
             String name = JOptionPane.showInputDialog(this, "Enter client name", "INICIANDO CLIENTE", JOptionPane.INFORMATION_MESSAGE);
 
             client = new FS(name, null);
+            //registry = LocateRegistry.getRegistry("192.168.0.102", 8888);
             registry = LocateRegistry.getRegistry(8888);
             server = (FS_Interface) registry.lookup("ejemplo");
 

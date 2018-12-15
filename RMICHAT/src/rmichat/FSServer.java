@@ -22,15 +22,15 @@ import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 
-public class ChatServer {
+public class FSServer {
 
     public static void main(String[] argv) {
-        ChatServer myChatServer = new ChatServer();
+        FSServer myChatServer = new FSServer();
 
         try {
             myChatServer.scanFS();
         } catch (InterruptedException ex) {
-            Logger.getLogger(ChatServer.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(FSServer.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         try {
@@ -40,9 +40,7 @@ public class ChatServer {
             DefaultTreeModel model = (DefaultTreeModel) myChatServer.RMI_FS.getModel();
             FS server = new FS(name, model);
 
-            //Public address: 181.115.9.201
-            //hostname ip-Adress: 127.0.1.1
-//          System.setProperty("java.rmi.server.hostname", "192.168.0.100");
+            //System.setProperty("java.rmi.server.hostname", "192.168.0.100");
             Registry registry = LocateRegistry.createRegistry(8888);
             registry.bind("ejemplo", server);
             
@@ -62,7 +60,7 @@ public class ChatServer {
                 try {
                     myChatServer.scanFS();
                 } catch (InterruptedException ex) {
-                    Logger.getLogger(ChatServer.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(FSServer.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
 
