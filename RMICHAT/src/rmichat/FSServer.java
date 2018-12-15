@@ -44,7 +44,7 @@ public class FSServer {
             Registry registry = LocateRegistry.createRegistry(8888);
             registry.bind("ejemplo", server);
             
-            JOptionPane.showMessageDialog(null, "SERVER ONLINE!", "SERVIDOR", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, "SERVER ONLINE!", "SERVER", JOptionPane.INFORMATION_MESSAGE);
 
             //String msg = s.nextLine().trim();
             while (true) {
