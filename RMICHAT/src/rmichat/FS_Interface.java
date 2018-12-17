@@ -41,4 +41,6 @@ public interface FS_Interface extends Remote {
     public void saveContent(String filePath, String fileContent) throws RemoteException;
     
     public void changeInitFile(String clientName, String initFilePath) throws RemoteException;
+    
+    public void disconnectClient(String name) throws RemoteException;
 }

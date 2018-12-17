@@ -41,7 +41,7 @@ public class FSClient extends javax.swing.JFrame {
         initComponents();
 
         try {
-            String name = JOptionPane.showInputDialog(this, "Enter client name", "INICIANDO CLIENTE", JOptionPane.INFORMATION_MESSAGE);
+            name = JOptionPane.showInputDialog(this, "Enter client name", "INICIANDO CLIENTE", JOptionPane.INFORMATION_MESSAGE);
 
             client = new FS(name, null, null);
             //registry = LocateRegistry.getRegistry("192.168.0.102", 8888);
@@ -90,6 +90,7 @@ public class FSClient extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         RMI_FS = new javax.swing.JTree();
         jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
 
         FS_OpenFile.setText("Open File");
         FS_OpenFile.addActionListener(new java.awt.event.ActionListener() {
@@ -172,17 +173,26 @@ public class FSClient extends javax.swing.JFrame {
             }
         });
 
+        jButton2.setText("Desmontar");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 606, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap(563, Short.MAX_VALUE)
+                        .addComponent(jButton1))
+                    .addComponent(jScrollPane1)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jButton1)))
+                        .addComponent(jButton2)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -191,8 +201,10 @@ public class FSClient extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jButton1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 448, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 444, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jButton2)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -220,13 +232,14 @@ public class FSClient extends javax.swing.JFrame {
 
             if (!"".equals(FileName)) {
                 try {
-                    server.createFile(file);
-                    RMI_FS.setModel(server.getFSModel());
-                    ArrayList<FS_Interface> clients = server.getClients();
-                    for (int i = 0; i < clients.size(); i++) {
-                        clients.get(i).setFS(server.getFSModel());
-                        clients.get(i).getFSModel().reload();
-
+                    if(!close){
+                        server.createFile(file);
+                        RMI_FS.setModel(server.getFSModel());
+                        ArrayList<FS_Interface> clients = server.getClients();
+                        for (int i = 0; i < clients.size(); i++) {
+                            clients.get(i).setFS(server.getFSModel());
+                            clients.get(i).getFSModel().reload();
+                        }
                     }
                 } catch (RemoteException ex) {
                     Logger.getLogger(FSClient.class.getName()).log(Level.SEVERE, null, ex);
@@ -251,12 +264,14 @@ public class FSClient extends javax.swing.JFrame {
 
             if (!"".equals(FileName)) {
                 try {
-                    server.createFile(file);
-                    RMI_FS.setModel(server.getFSModel());
-                    ArrayList<FS_Interface> clients = server.getClients();
-                    for (int i = 0; i < clients.size(); i++) {
-                        clients.get(i).setFS(server.getFSModel());
-                        clients.get(i).getFSModel().reload();
+                    if(!close){
+                        server.createFile(file);
+                        RMI_FS.setModel(server.getFSModel());
+                        ArrayList<FS_Interface> clients = server.getClients();
+                        for (int i = 0; i < clients.size(); i++) {
+                            clients.get(i).setFS(server.getFSModel());
+                            clients.get(i).getFSModel().reload();
+                        }
                     }
                 } catch (RemoteException ex) {
                     Logger.getLogger(FSClient.class.getName()).log(Level.SEVERE, null, ex);
@@ -282,13 +297,15 @@ public class FSClient extends javax.swing.JFrame {
 
             if (!file.exists() && !"".equals(DirectoryName)) {
                 try {
-                    //new File(rootDir + DirectoryName).mkdirs();
-                    server.createDirectory(rootDir, DirectoryName);
-                    RMI_FS.setModel(server.getFSModel());
-                    ArrayList<FS_Interface> clients = server.getClients();
-                    for (int i = 0; i < clients.size(); i++) {
-                        clients.get(i).setFS(server.getFSModel());
-                        clients.get(i).getFSModel().reload();
+                    if(!close){
+                        //new File(rootDir + DirectoryName).mkdirs();
+                        server.createDirectory(rootDir, DirectoryName);
+                        RMI_FS.setModel(server.getFSModel());
+                        ArrayList<FS_Interface> clients = server.getClients();
+                        for (int i = 0; i < clients.size(); i++) {
+                            clients.get(i).setFS(server.getFSModel());
+                            clients.get(i).getFSModel().reload();
+                        }
                     }
                 } catch (RemoteException ex) {
                     Logger.getLogger(FSClient.class.getName()).log(Level.SEVERE, null, ex);
@@ -320,12 +337,14 @@ public class FSClient extends javax.swing.JFrame {
 
             if (!file.exists() && !"".equals(DirectoryName)) {
                 try {
-                    server.createDirectory(DirPath, DirectoryName);
-                    RMI_FS.setModel(server.getFSModel());
-                    ArrayList<FS_Interface> clients = server.getClients();
-                    for (int i = 0; i < clients.size(); i++) {
-                        clients.get(i).setFS(server.getFSModel());
-                        clients.get(i).getFSModel().reload();
+                    if(!close){
+                        server.createDirectory(DirPath, DirectoryName);
+                        RMI_FS.setModel(server.getFSModel());
+                        ArrayList<FS_Interface> clients = server.getClients();
+                        for (int i = 0; i < clients.size(); i++) {
+                            clients.get(i).setFS(server.getFSModel());
+                            clients.get(i).getFSModel().reload();
+                        }
                     }
                 } catch (RemoteException ex) {
                     Logger.getLogger(FSClient.class.getName()).log(Level.SEVERE, null, ex);
@@ -358,113 +377,115 @@ public class FSClient extends javax.swing.JFrame {
         actualDir = DirPath;
 
         try {
-            if (server.isFile(DirPath)) {
-                String FileContent = "";
+            if(!close){
+                if (server.isFile(DirPath)) {
+                    String FileContent = "";
 
-                File cacheDirectory = new File(cacheDir);
-                if (!cacheDirectory.exists()) {
-                    new File(cacheDir).mkdirs();
+                    File cacheDirectory = new File(cacheDir);
+                    if (!cacheDirectory.exists()) {
+                        new File(cacheDir).mkdirs();
 
-                    JOptionPane.showMessageDialog(null, "Cache directory created!", "DIRECTORY", JOptionPane.INFORMATION_MESSAGE);
+                        JOptionPane.showMessageDialog(null, "Cache directory created!", "DIRECTORY", JOptionPane.INFORMATION_MESSAGE);
 
-                    File newFile = new File(cacheDir + paths[paths.length - 1].toString());
-                    try {
-                        BufferedWriter writer = null;
-                        if (newFile.createNewFile()) {;
-                            writer = new BufferedWriter(new FileWriter(newFile, false));
-                            writer.write(server.getFileContent(DirPath));
-                            writer.close();
-
-                            JOptionPane.showMessageDialog(null, "File created in cache!", "CREATE FILE", JOptionPane.INFORMATION_MESSAGE);
-                            openedFile = cacheDir + paths[paths.length - 1].toString();
-                        } else {
-                            JOptionPane.showMessageDialog(null, "File already exists in cache", "CREATE FILE", JOptionPane.ERROR_MESSAGE);
-                        }
-
-                        File iniFile = new File(cacheDir + paths[paths.length - 1].toString() + ".ini");
-                        if (iniFile.createNewFile()) {
-                            writer = new BufferedWriter(new FileWriter(iniFile, false));
-                            writer.write("0");
-                            writer.close();
-
-                            JOptionPane.showMessageDialog(null, "Bit file created in cache!", "CREATE FILE", JOptionPane.INFORMATION_MESSAGE);
-                            initFile = cacheDir + paths[paths.length - 1].toString() + ".ini";
-                        } else {
-                            JOptionPane.showMessageDialog(null, "Bit file already exists in cache", "CREATE FILE", JOptionPane.ERROR_MESSAGE);
-
-                            FileContent = "";
-                            for (String line : Files.readAllLines(Paths.get(initFile), StandardCharsets.UTF_8)) {
-                                FileContent += line + "\n";
-                            }
-
-                            if (Integer.parseInt(FileContent) == 1) {
+                        File newFile = new File(cacheDir + paths[paths.length - 1].toString());
+                        try {
+                            BufferedWriter writer = null;
+                            if (newFile.createNewFile()) {;
                                 writer = new BufferedWriter(new FileWriter(newFile, false));
                                 writer.write(server.getFileContent(DirPath));
                                 writer.close();
 
+                                JOptionPane.showMessageDialog(null, "File created in cache!", "CREATE FILE", JOptionPane.INFORMATION_MESSAGE);
+                                openedFile = cacheDir + paths[paths.length - 1].toString();
+                            } else {
+                                JOptionPane.showMessageDialog(null, "File already exists in cache", "CREATE FILE", JOptionPane.ERROR_MESSAGE);
+                            }
+
+                            File iniFile = new File(cacheDir + paths[paths.length - 1].toString() + ".ini");
+                            if (iniFile.createNewFile()) {
                                 writer = new BufferedWriter(new FileWriter(iniFile, false));
                                 writer.write("0");
                                 writer.close();
+
+                                JOptionPane.showMessageDialog(null, "Bit file created in cache!", "CREATE FILE", JOptionPane.INFORMATION_MESSAGE);
+                                initFile = cacheDir + paths[paths.length - 1].toString() + ".ini";
+                            } else {
+                                JOptionPane.showMessageDialog(null, "Bit file already exists in cache", "CREATE FILE", JOptionPane.ERROR_MESSAGE);
+
+                                FileContent = "";
+                                for (String line : Files.readAllLines(Paths.get(initFile), StandardCharsets.UTF_8)) {
+                                    FileContent += line + "\n";
+                                }
+
+                                if (Integer.parseInt(FileContent) == 1) {
+                                    writer = new BufferedWriter(new FileWriter(newFile, false));
+                                    writer.write(server.getFileContent(DirPath));
+                                    writer.close();
+
+                                    writer = new BufferedWriter(new FileWriter(iniFile, false));
+                                    writer.write("0");
+                                    writer.close();
+                                }
                             }
+                        } catch (IOException ex) {
+                            Logger.getLogger(FSClient.class.getName()).log(Level.SEVERE, null, ex);
                         }
-                    } catch (IOException ex) {
-                        Logger.getLogger(FSClient.class.getName()).log(Level.SEVERE, null, ex);
+                    } else {
+                        File newFile = new File(cacheDir + paths[paths.length - 1].toString());
+
+                        try {
+                            BufferedWriter writer = null;
+                            if (newFile.createNewFile()) {
+                                writer = new BufferedWriter(new FileWriter(newFile, false));
+                                writer.write(server.getFileContent(DirPath));
+                                writer.close();
+
+                                JOptionPane.showMessageDialog(null, "File created in cache!", "CREATE FILE", JOptionPane.INFORMATION_MESSAGE);
+                                openedFile = cacheDir + paths[paths.length - 1].toString();
+                            } else {
+                                JOptionPane.showMessageDialog(null, "File already exists in cache", "CREATE FILE", JOptionPane.ERROR_MESSAGE);
+                            }
+
+                            File iniFile = new File(cacheDir + paths[paths.length - 1].toString() + ".ini");
+                            if (iniFile.createNewFile()) {
+                                writer = new BufferedWriter(new FileWriter(iniFile, false));
+                                writer.write(0);
+                                writer.close();
+
+                                JOptionPane.showMessageDialog(null, "Bit file created in cache!", "CREATE FILE", JOptionPane.INFORMATION_MESSAGE);
+                                initFile = cacheDir + paths[paths.length - 1].toString() + ".ini";
+                            } else {
+                                JOptionPane.showMessageDialog(null, "Bit file already exists in cache", "CREATE FILE", JOptionPane.ERROR_MESSAGE);
+
+                                FileContent = "";
+                                for (String line : Files.readAllLines(Paths.get(initFile), StandardCharsets.UTF_8)) {
+                                    FileContent += line + "\n";
+                                }
+
+                                if (Integer.parseInt(FileContent) == 1) {
+                                    writer = new BufferedWriter(new FileWriter(newFile, false));
+                                    writer.write(server.getFileContent(DirPath));
+                                    writer.close();
+
+                                    writer = new BufferedWriter(new FileWriter(iniFile, false));
+                                    writer.write("0");
+                                    writer.close();
+                                }
+                            }
+                        } catch (IOException ex) {
+                            Logger.getLogger(FSClient.class.getName()).log(Level.SEVERE, null, ex);
+                        }
                     }
+
+                    jta_FileContent.setText(server.getFileContent(DirPath));
+
+                    jd_File.setModal(true);
+                    jd_File.pack();
+                    jd_File.setLocationRelativeTo(this);
+                    jd_File.setVisible(true);
                 } else {
-                    File newFile = new File(cacheDir + paths[paths.length - 1].toString());
-
-                    try {
-                        BufferedWriter writer = null;
-                        if (newFile.createNewFile()) {
-                            writer = new BufferedWriter(new FileWriter(newFile, false));
-                            writer.write(server.getFileContent(DirPath));
-                            writer.close();
-
-                            JOptionPane.showMessageDialog(null, "File created in cache!", "CREATE FILE", JOptionPane.INFORMATION_MESSAGE);
-                            openedFile = cacheDir + paths[paths.length - 1].toString();
-                        } else {
-                            JOptionPane.showMessageDialog(null, "File already exists in cache", "CREATE FILE", JOptionPane.ERROR_MESSAGE);
-                        }
-
-                        File iniFile = new File(cacheDir + paths[paths.length - 1].toString() + ".ini");
-                        if (iniFile.createNewFile()) {
-                            writer = new BufferedWriter(new FileWriter(iniFile, false));
-                            writer.write(0);
-                            writer.close();
-
-                            JOptionPane.showMessageDialog(null, "Bit file created in cache!", "CREATE FILE", JOptionPane.INFORMATION_MESSAGE);
-                            initFile = cacheDir + paths[paths.length - 1].toString() + ".ini";
-                        } else {
-                            JOptionPane.showMessageDialog(null, "Bit file already exists in cache", "CREATE FILE", JOptionPane.ERROR_MESSAGE);
-
-                            FileContent = "";
-                            for (String line : Files.readAllLines(Paths.get(initFile), StandardCharsets.UTF_8)) {
-                                FileContent += line + "\n";
-                            }
-
-                            if (Integer.parseInt(FileContent) == 1) {
-                                writer = new BufferedWriter(new FileWriter(newFile, false));
-                                writer.write(server.getFileContent(DirPath));
-                                writer.close();
-
-                                writer = new BufferedWriter(new FileWriter(iniFile, false));
-                                writer.write("0");
-                                writer.close();
-                            }
-                        }
-                    } catch (IOException ex) {
-                        Logger.getLogger(FSClient.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+                    JOptionPane.showMessageDialog(this, "It's a Directory! ", "OPEN FILE", JOptionPane.ERROR_MESSAGE);
                 }
-
-                jta_FileContent.setText(server.getFileContent(DirPath));
-
-                jd_File.setModal(true);
-                jd_File.pack();
-                jd_File.setLocationRelativeTo(this);
-                jd_File.setVisible(true);
-            } else {
-                JOptionPane.showMessageDialog(this, "It's a Directory! ", "OPEN FILE", JOptionPane.ERROR_MESSAGE);
             }
         } catch (RemoteException ex) {
             Logger.getLogger(FSClient.class.getName()).log(Level.SEVERE, null, ex);
@@ -473,7 +494,9 @@ public class FSClient extends javax.swing.JFrame {
 
     private void FileContent_SaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FileContent_SaveActionPerformed
         try {
-            server.changeInitFile(client.getName(), initFile);
+            if(!close){
+                server.changeInitFile(client.getName(), initFile);
+            }
         } catch (RemoteException ex) {
             Logger.getLogger(FSClient.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -488,11 +511,26 @@ public class FSClient extends javax.swing.JFrame {
     private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
         try {
             // TODO add your handling code here:
-            RMI_FS.setModel(server.getFSModel());
+            if(!close){
+                RMI_FS.setModel(server.getFSModel());
+            }
         } catch (RemoteException ex) {
             Logger.getLogger(FSClient.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jButton1MouseClicked
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+       try {
+            // TODO add your handling code here:
+            if(!close){
+                server.disconnectClient(name);
+                client.disconnectClient(name);
+                close = true;
+            }
+        } catch (RemoteException ex) {
+            Logger.getLogger(FSClient.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
 
 /**
  * @param args the command line arguments
@@ -552,6 +590,7 @@ public static void main(String args[]) {
     private javax.swing.JMenu Menu_FileContent;
     private javax.swing.JTree RMI_FS;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JDialog jd_File;
@@ -564,6 +603,8 @@ public static void main(String args[]) {
     FS_Interface client;
     Registry registry;
     FS_Interface server;
+    boolean close = false;
+    String name = "";
 
     public void scanFS() throws InterruptedException {
         File currentDir = new File(rootDir);
