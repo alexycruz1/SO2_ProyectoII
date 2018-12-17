@@ -90,6 +90,7 @@ public class FSClient extends javax.swing.JFrame {
         FileContent_Close = new javax.swing.JMenuItem();
         jScrollPane1 = new javax.swing.JScrollPane();
         RMI_FS = new javax.swing.JTree();
+        jButton1 = new javax.swing.JButton();
 
         FS_OpenFile.setText("Open File");
         FS_OpenFile.addActionListener(new java.awt.event.ActionListener() {
@@ -173,6 +174,13 @@ public class FSClient extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(RMI_FS);
 
+        jButton1.setText("Refresh");
+        jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton1MouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -181,12 +189,18 @@ public class FSClient extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 606, Short.MAX_VALUE)
                 .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton1)
+                .addGap(47, 47, 47))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 483, Short.MAX_VALUE)
+                .addComponent(jButton1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 438, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -508,6 +522,15 @@ public class FSClient extends javax.swing.JFrame {
         }*/
     }//GEN-LAST:event_FS_DeleteActionPerformed
 
+    private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
+        try {
+            // TODO add your handling code here:
+            RMI_FS.setModel(server.getFSModel());
+        } catch (RemoteException ex) {
+            Logger.getLogger(FSClient.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jButton1MouseClicked
+
 /**
  * @param args the command line arguments
  */
@@ -566,6 +589,7 @@ public static void main(String args[]) {
     private javax.swing.JMenuItem FileContent_Save;
     private javax.swing.JMenu Menu_FileContent;
     private javax.swing.JTree RMI_FS;
+    private javax.swing.JButton jButton1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JDialog jd_File;

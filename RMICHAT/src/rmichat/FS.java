@@ -45,8 +45,6 @@ public class FS extends UnicastRemoteObject implements FS_Interface {
         if (FSTree != null) {
             this.FSTree.setModel(FS);
             this.FS.reload();
-            
-            System.out.println("HOLA PRRO");
         }
     }
 

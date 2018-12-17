@@ -58,6 +58,7 @@ public class FSServer {
 
                 try {
                     myChatServer.scanFS();
+                    server.setFS((DefaultTreeModel) myChatServer.RMI_FS.getModel());
                 } catch (InterruptedException ex) {
                     Logger.getLogger(FSServer.class.getName()).log(Level.SEVERE, null, ex);
                 }
