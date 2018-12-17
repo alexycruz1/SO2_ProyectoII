@@ -24,5 +24,7 @@ A partir de esta carpeta, clientes pueden crear archivos y directorios.
 * 1.- Los clientes al conectarse al servidor, les debe aparecer en GUI los archivos y directorios que tiene el servidor remoto.
 * 2.- Los clientes pueden modificar la estructura de directorios. Esta modificación se debe programar a los clientes que están conectados con el servidor.
 * 4.- Los archivos son de texto y editables.
+* 5.- Los archivos remotos se mantienen el cliente en el cache de disco.
+* 6.- Cada modificación en el archivo de texto (puede usar notepad para edición), se debe de propagar el servidor de inmediato.
 * 7.- Se debe crear una interfaz remota para establecer comunicación entre el cliente y el servidor. Es obligatorio usar MIDDLEWARE
 * 8.- Se debe crear una GUI para mostrar la estructura de directorios.
