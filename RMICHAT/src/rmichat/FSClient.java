@@ -80,7 +80,6 @@ public class FSClient extends javax.swing.JFrame {
         FS_OpenFile = new javax.swing.JMenuItem();
         FS_CreateFile = new javax.swing.JMenuItem();
         FS_CreateDirectory = new javax.swing.JMenuItem();
-        FS_Delete = new javax.swing.JMenuItem();
         jd_File = new javax.swing.JDialog();
         jScrollPane2 = new javax.swing.JScrollPane();
         jta_FileContent = new javax.swing.JTextArea();
@@ -115,14 +114,6 @@ public class FSClient extends javax.swing.JFrame {
             }
         });
         FS_Options.add(FS_CreateDirectory);
-
-        FS_Delete.setText("Delete");
-        FS_Delete.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                FS_DeleteActionPerformed(evt);
-            }
-        });
-        FS_Options.add(FS_Delete);
 
         jta_FileContent.setColumns(20);
         jta_FileContent.setRows(5);
@@ -187,20 +178,20 @@ public class FSClient extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 606, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 606, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jButton1)))
                 .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton1)
-                .addGap(47, 47, 47))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jButton1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 438, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 448, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -494,34 +485,6 @@ public class FSClient extends javax.swing.JFrame {
         jta_FileContent.setText("");
     }//GEN-LAST:event_FileContent_CloseActionPerformed
 
-    private void FS_DeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FS_DeleteActionPerformed
-        // TODO add your handling code here:
-        /*final Path path = Paths.get(actualDir);
-        File ActualFile = new File(actualDir);
-
-        if (Files.isExecutable(path)) {
-            try {
-                FileUtils.deleteDirectory(ActualFile);
-                JOptionPane.showMessageDialog(this, "Directory deleted. ", "DELETE DIRECTORY", JOptionPane.ERROR_MESSAGE);
-            } catch (IOException ex) {
-                Logger.getLogger(FSClient.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        } else {
-            try {
-                Files.delete(path);
-                JOptionPane.showMessageDialog(this, "File deleted. ", "DELETE FILE", JOptionPane.ERROR_MESSAGE);
-            } catch (IOException ex) {
-                Logger.getLogger(FSClient.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-
-        try {
-            this.scanFS();
-        } catch (InterruptedException ex) {
-            Logger.getLogger(FSClient.class.getName()).log(Level.SEVERE, null, ex);
-        }*/
-    }//GEN-LAST:event_FS_DeleteActionPerformed
-
     private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
         try {
             // TODO add your handling code here:
@@ -582,7 +545,6 @@ public static void main(String args[]) {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem FS_CreateDirectory;
     private javax.swing.JMenuItem FS_CreateFile;
-    private javax.swing.JMenuItem FS_Delete;
     private javax.swing.JMenuItem FS_OpenFile;
     private javax.swing.JPopupMenu FS_Options;
     private javax.swing.JMenuItem FileContent_Close;
