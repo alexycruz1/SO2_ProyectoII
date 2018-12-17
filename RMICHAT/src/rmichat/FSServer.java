@@ -43,15 +43,12 @@ public class FSServer {
             //System.setProperty("java.rmi.server.hostname", "192.168.0.100");
             Registry registry = LocateRegistry.createRegistry(8888);
             registry.bind("ejemplo", server);
-            
+
             JOptionPane.showMessageDialog(null, "SERVER ONLINE!", "SERVER", JOptionPane.INFORMATION_MESSAGE);
 
-            //String msg = s.nextLine().trim();
             while (true) {
                 ArrayList<FS_Interface> clients = server.getClients();
                 if (!clients.isEmpty()) {
-//               ChatInterface client = server.getClient();
-                    //msg = "[" + server.getName() + "] " + msg;
                     for (FS_Interface client : clients) {
                         client.setFS(model);
                     }
@@ -63,21 +60,9 @@ public class FSServer {
                     Logger.getLogger(FSServer.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
-
-            /*while (true) {
-                String msg = s.nextLine().trim();
-                ArrayList<FS_Interface> clients = server.getClients();
-                if (!clients.isEmpty()) {
-//                    ChatInterface client = server.getClient();
-                    msg = "[" + server.getName() + "] " + msg;
-                    for (FS_Interface client : clients) {
-                        client.send(msg);
-                    }
-
-                }
-            }*/
         } catch (Exception e) {
-            System.out.println("[System] Server failed: " + e);
+            JOptionPane.showMessageDialog(null, "Server failed!", "INICIANDO CLIENTE", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, e, "INICIANDO CLIENTE", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -102,7 +87,7 @@ public class FSServer {
 
         for (File file : files) {
             if (file == null) {
-                System.out.println("NUll directory found ");
+                JOptionPane.showMessageDialog(null, "NULL Directory found!", "DISPLAYING DIRECTORY CONTENTS", JOptionPane.ERROR_MESSAGE);
                 continue;
             }
             if (file.isDirectory()) {

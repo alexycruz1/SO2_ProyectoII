@@ -36,4 +36,8 @@ public interface FS_Interface extends Remote {
     public String getFileContent(String DirPath) throws RemoteException;
     
     public boolean isFile(String filePath) throws RemoteException;
+    
+    public void saveContent(String filePath, String fileContent) throws RemoteException;
+    
+    public void changeInitFile(String clientName, String initFilePath) throws RemoteException;
 }

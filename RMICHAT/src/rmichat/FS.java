@@ -9,7 +9,9 @@ package rmichat;
  *
  * @author xioma
  */
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -52,7 +54,7 @@ public class FS extends UnicastRemoteObject implements FS_Interface {
     }
 
     public void send(String s) throws RemoteException {
-        System.out.println(s);
+        JOptionPane.showMessageDialog(null, s, "INICIANDO CLIENTE", JOptionPane.INFORMATION_MESSAGE);
     }
 
     public DefaultTreeModel getFSModel() {
@@ -88,10 +90,38 @@ public class FS extends UnicastRemoteObject implements FS_Interface {
 
         return FileContent;
     }
-    
-    public boolean isFile(String filePath) { 
+
+    public boolean isFile(String filePath) {
         final Path path = Paths.get(filePath);
-        
+
         return !Files.isExecutable(path);
+    }
+
+    public void saveContent(String filePath, String fileContent) {
+        try {
+            File updatedFile = new File(filePath);
+
+            BufferedWriter writer = null;
+
+            writer = new BufferedWriter(new FileWriter(updatedFile, false));
+            writer.write(fileContent);
+            writer.close();
+
+            JOptionPane.showMessageDialog(null, "File Saved! ", "OPEN FILE", JOptionPane.INFORMATION_MESSAGE);
+        } catch (IOException ex) {
+            Logger.getLogger(FS.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void changeInitFile(String clientName, String initFilePath) {
+        for (int i = 0; i < this.clients.size(); i++) {
+            try {
+                if (!this.clients.get(i).getName().equals(clientName)) {
+                    this.clients.get(i).saveContent(initFilePath, "1");
+                }
+            } catch (RemoteException ex) {
+                Logger.getLogger(FS.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
 }
