@@ -80,7 +80,7 @@ public class FS extends UnicastRemoteObject implements FS_Interface {
                 JOptionPane.showMessageDialog(null, "File already exists.", "CREATE FILE", JOptionPane.ERROR_MESSAGE);
             }
         } catch (IOException ex) {
-            Logger.getLogger(FS.class.getName()).log(Level.SEVERE, null, ex);
+            //Logger.getLogger(FS.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -92,7 +92,7 @@ public class FS extends UnicastRemoteObject implements FS_Interface {
                 FileContent += line + "\n";
             }
         } catch (IOException ex) {
-            Logger.getLogger(FS.class.getName()).log(Level.SEVERE, null, ex);
+            //Logger.getLogger(FS.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         return FileContent;
@@ -111,12 +111,12 @@ public class FS extends UnicastRemoteObject implements FS_Interface {
             BufferedWriter writer = null;
 
             writer = new BufferedWriter(new FileWriter(updatedFile, false));
-            writer.write("HOLA");
+            writer.write(fileContent);
             writer.close();
 
             JOptionPane.showMessageDialog(null, "File Saved! ", "OPEN FILE", JOptionPane.INFORMATION_MESSAGE);
         } catch (IOException ex) {
-            Logger.getLogger(FS.class.getName()).log(Level.SEVERE, null, ex);
+            //Logger.getLogger(FS.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -127,7 +127,7 @@ public class FS extends UnicastRemoteObject implements FS_Interface {
                     this.clients.get(i).saveContent(initFilePath, "1");
                 }
             } catch (RemoteException ex) {
-                Logger.getLogger(FS.class.getName()).log(Level.SEVERE, null, ex);
+                //Logger.getLogger(FS.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }

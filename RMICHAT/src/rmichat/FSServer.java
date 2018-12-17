@@ -30,7 +30,7 @@ public class FSServer {
         try {
             myChatServer.scanFS();
         } catch (InterruptedException ex) {
-            Logger.getLogger(FSServer.class.getName()).log(Level.SEVERE, null, ex);
+            //Logger.getLogger(FSServer.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         try {
@@ -60,7 +60,7 @@ public class FSServer {
                     myChatServer.scanFS();
                     server.setFS((DefaultTreeModel) myChatServer.RMI_FS.getModel());
                 } catch (InterruptedException ex) {
-                    Logger.getLogger(FSServer.class.getName()).log(Level.SEVERE, null, ex);
+                    //Logger.getLogger(FSServer.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         } catch (Exception e) {

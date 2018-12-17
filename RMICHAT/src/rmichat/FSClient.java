@@ -242,7 +242,7 @@ public class FSClient extends javax.swing.JFrame {
                         }*/
                     }
                 } catch (RemoteException ex) {
-                    Logger.getLogger(FSClient.class.getName()).log(Level.SEVERE, null, ex);
+                    //Logger.getLogger(FSClient.class.getName()).log(Level.SEVERE, null, ex);
                 }
             } else {
                 JOptionPane.showMessageDialog(this, "File name required. ", "CREATE FILE", JOptionPane.WARNING_MESSAGE);
@@ -274,7 +274,7 @@ public class FSClient extends javax.swing.JFrame {
                         }*/
                     }
                 } catch (RemoteException ex) {
-                    Logger.getLogger(FSClient.class.getName()).log(Level.SEVERE, null, ex);
+                    //Logger.getLogger(FSClient.class.getName()).log(Level.SEVERE, null, ex);
                 }
             } else {
                 JOptionPane.showMessageDialog(this, "File name required. ", "CREATE FILE", JOptionPane.WARNING_MESSAGE);
@@ -284,7 +284,7 @@ public class FSClient extends javax.swing.JFrame {
         try {
             this.scanFS();
         } catch (InterruptedException ex) {
-            Logger.getLogger(FSClient.class.getName()).log(Level.SEVERE, null, ex);
+            //Logger.getLogger(FSClient.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_FS_CreateFileActionPerformed
 
@@ -308,7 +308,7 @@ public class FSClient extends javax.swing.JFrame {
                         }*/
                     }
                 } catch (RemoteException ex) {
-                    Logger.getLogger(FSClient.class.getName()).log(Level.SEVERE, null, ex);
+                    //Logger.getLogger(FSClient.class.getName()).log(Level.SEVERE, null, ex);
                 }
 
                 JOptionPane.showMessageDialog(this, "Directory Created! ", "CREATE DIRECTORY", JOptionPane.INFORMATION_MESSAGE);
@@ -347,7 +347,7 @@ public class FSClient extends javax.swing.JFrame {
                         }*/
                     }
                 } catch (RemoteException ex) {
-                    Logger.getLogger(FSClient.class.getName()).log(Level.SEVERE, null, ex);
+                    //Logger.getLogger(FSClient.class.getName()).log(Level.SEVERE, null, ex);
                 }
 
                 JOptionPane.showMessageDialog(this, "Directory Created! ", "CREATE DIRECTORY", JOptionPane.INFORMATION_MESSAGE);
@@ -378,7 +378,7 @@ public class FSClient extends javax.swing.JFrame {
         DirPathInServer = DirPath;
 
         try {
-            if(true){
+            if(!close){
                 if (true) {
                     String FileContent = "";
 
@@ -431,7 +431,7 @@ public class FSClient extends javax.swing.JFrame {
                                 }
                             }
                         } catch (IOException ex) {
-                            Logger.getLogger(FSClient.class.getName()).log(Level.SEVERE, null, ex);
+                            //Logger.getLogger(FSClient.class.getName()).log(Level.SEVERE, null, ex);
                         }
                     } else {
                         File newFile = new File(cacheDir + paths[paths.length - 1].toString());
@@ -478,7 +478,7 @@ public class FSClient extends javax.swing.JFrame {
                                 }
                             }
                         } catch (IOException ex) {
-                            Logger.getLogger(FSClient.class.getName()).log(Level.SEVERE, null, ex);
+                            //Logger.getLogger(FSClient.class.getName()).log(Level.SEVERE, null, ex);
                         }
                     }
 
@@ -494,7 +494,7 @@ public class FSClient extends javax.swing.JFrame {
                 }
             }
         } catch (RemoteException ex) {
-            Logger.getLogger(FSClient.class.getName()).log(Level.SEVERE, null, ex);
+            //Logger.getLogger(FSClient.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_FS_OpenFileActionPerformed
 
@@ -506,7 +506,7 @@ public class FSClient extends javax.swing.JFrame {
                 server.saveContent(actualDir, jta_FileContent.getText());
             }
         } catch (RemoteException ex) {
-            Logger.getLogger(FSClient.class.getName()).log(Level.SEVERE, null, ex);
+            //Logger.getLogger(FSClient.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_FileContent_SaveActionPerformed
 
@@ -523,7 +523,7 @@ public class FSClient extends javax.swing.JFrame {
                 RMI_FS.setModel(server.getFSModel());
             }
         } catch (RemoteException ex) {
-            Logger.getLogger(FSClient.class.getName()).log(Level.SEVERE, null, ex);
+            //Logger.getLogger(FSClient.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jButton1MouseClicked
 
@@ -536,7 +536,7 @@ public class FSClient extends javax.swing.JFrame {
                 close = true;
             }
         } catch (RemoteException ex) {
-            Logger.getLogger(FSClient.class.getName()).log(Level.SEVERE, null, ex);
+            //Logger.getLogger(FSClient.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 
