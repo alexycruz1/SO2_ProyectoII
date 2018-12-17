@@ -267,11 +267,11 @@ public class FSClient extends javax.swing.JFrame {
                     if(!close){
                         server.createFile(file);
                         RMI_FS.setModel(server.getFSModel());
-                        ArrayList<FS_Interface> clients = server.getClients();
+                        /*ArrayList<FS_Interface> clients = server.getClients();
                         for (int i = 0; i < clients.size(); i++) {
                             clients.get(i).setFS(server.getFSModel());
                             clients.get(i).getFSModel().reload();
-                        }
+                        }*/
                     }
                 } catch (RemoteException ex) {
                     Logger.getLogger(FSClient.class.getName()).log(Level.SEVERE, null, ex);
@@ -369,7 +369,7 @@ public class FSClient extends javax.swing.JFrame {
         for (int i = 0; i < paths.length; i++) {
             DirPath += paths[i];
             if (i + 1 < paths.length) {
-                DirPath += "/";
+                DirPath += File.separator;
             }
         }
 
@@ -402,14 +402,14 @@ public class FSClient extends javax.swing.JFrame {
                                 JOptionPane.showMessageDialog(null, "File already exists in cache", "CREATE FILE", JOptionPane.ERROR_MESSAGE);
                             }
 
-                            File iniFile = new File(cacheDir + paths[paths.length - 1].toString() + ".ini");
+                            File iniFile = new File(cacheDir + paths[paths.length - 1].toString() + ".bin");
                             if (iniFile.createNewFile()) {
                                 writer = new BufferedWriter(new FileWriter(iniFile, false));
                                 writer.write("0");
                                 writer.close();
 
                                 JOptionPane.showMessageDialog(null, "Bit file created in cache!", "CREATE FILE", JOptionPane.INFORMATION_MESSAGE);
-                                initFile = cacheDir + paths[paths.length - 1].toString() + ".ini";
+                                initFile = cacheDir + paths[paths.length - 1].toString() + ".bin";
                             } else {
                                 JOptionPane.showMessageDialog(null, "Bit file already exists in cache", "CREATE FILE", JOptionPane.ERROR_MESSAGE);
 
@@ -417,8 +417,10 @@ public class FSClient extends javax.swing.JFrame {
                                 for (String line : Files.readAllLines(Paths.get(initFile), StandardCharsets.UTF_8)) {
                                     FileContent += line + "\n";
                                 }
+                                
+                                System.out.println(FileContent);
 
-                                if (Integer.parseInt(FileContent) == 1) {
+                                if (FileContent.contains("1")) {
                                     writer = new BufferedWriter(new FileWriter(newFile, false));
                                     writer.write(server.getFileContent(DirPath));
                                     writer.close();
@@ -447,14 +449,14 @@ public class FSClient extends javax.swing.JFrame {
                                 JOptionPane.showMessageDialog(null, "File already exists in cache", "CREATE FILE", JOptionPane.ERROR_MESSAGE);
                             }
 
-                            File iniFile = new File(cacheDir + paths[paths.length - 1].toString() + ".ini");
+                            File iniFile = new File(cacheDir + paths[paths.length - 1].toString() + ".bin");
                             if (iniFile.createNewFile()) {
                                 writer = new BufferedWriter(new FileWriter(iniFile, false));
                                 writer.write(0);
                                 writer.close();
 
                                 JOptionPane.showMessageDialog(null, "Bit file created in cache!", "CREATE FILE", JOptionPane.INFORMATION_MESSAGE);
-                                initFile = cacheDir + paths[paths.length - 1].toString() + ".ini";
+                                initFile = cacheDir + paths[paths.length - 1].toString() + ".bin";
                             } else {
                                 JOptionPane.showMessageDialog(null, "Bit file already exists in cache", "CREATE FILE", JOptionPane.ERROR_MESSAGE);
 
@@ -462,8 +464,10 @@ public class FSClient extends javax.swing.JFrame {
                                 for (String line : Files.readAllLines(Paths.get(initFile), StandardCharsets.UTF_8)) {
                                     FileContent += line + "\n";
                                 }
+                                
+                                System.out.println(FileContent);
 
-                                if (Integer.parseInt(FileContent) == 1) {
+                                if (FileContent.contains("1")) {
                                     writer = new BufferedWriter(new FileWriter(newFile, false));
                                     writer.write(server.getFileContent(DirPath));
                                     writer.close();
@@ -499,7 +503,7 @@ public class FSClient extends javax.swing.JFrame {
             if(!close){
                 server.changeInitFile(client.getName(), initFile);
                 System.out.println(actualDir);
-                server.saveContent(actualDir, openedFileContent);
+                server.saveContent(actualDir, jta_FileContent.getText());
             }
         } catch (RemoteException ex) {
             Logger.getLogger(FSClient.class.getName()).log(Level.SEVERE, null, ex);
@@ -602,7 +606,7 @@ public static void main(String args[]) {
     private javax.swing.JTextArea jta_FileContent;
     // End of variables declaration//GEN-END:variables
     DefaultMutableTreeNode nodo_seleccionado;
-    String actualDir = "", rootDir = "./Our Local Disk C", cacheDir = "./cache/", initFile = "", openedFile = "", openedFileContent = "", DirPathInServer = "";
+    String actualDir = "", rootDir = "./Our Local Disk C/", cacheDir = "./cache/", initFile = "", openedFile = "", openedFileContent = "", DirPathInServer = "";
 
     FS_Interface client;
     Registry registry;

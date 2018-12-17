@@ -111,7 +111,7 @@ public class FS extends UnicastRemoteObject implements FS_Interface {
             BufferedWriter writer = null;
 
             writer = new BufferedWriter(new FileWriter(updatedFile, false));
-            writer.write(fileContent);
+            writer.write("HOLA");
             writer.close();
 
             JOptionPane.showMessageDialog(null, "File Saved! ", "OPEN FILE", JOptionPane.INFORMATION_MESSAGE);
