@@ -166,11 +166,6 @@ public class FSClient extends javax.swing.JFrame {
 
         javax.swing.tree.DefaultMutableTreeNode treeNode1 = new javax.swing.tree.DefaultMutableTreeNode("Our Local Disk C");
         RMI_FS.setModel(new javax.swing.tree.DefaultTreeModel(treeNode1));
-        RMI_FS.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
-            public void mouseMoved(java.awt.event.MouseEvent evt) {
-                RMI_FSMouseMoved(evt);
-            }
-        });
         RMI_FS.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 RMI_FSMouseClicked(evt);
@@ -512,18 +507,6 @@ public class FSClient extends javax.swing.JFrame {
             Logger.getLogger(FSClient.class.getName()).log(Level.SEVERE, null, ex);
         }*/
     }//GEN-LAST:event_FS_DeleteActionPerformed
-
-    private void RMI_FSMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_RMI_FSMouseMoved
-        try {
-            // TODO add your handling code here:
-            if(getNumberOfNodes(RMI_FS.getModel(), RMI_FS.getModel().getRoot()) < getNumberOfNodes(server.getFSModel(), server.getFSModel().getRoot())) {
-                //System.out.println("Child count: " + getNumberOfNodes(RMI_FS.getModel(), RMI_FS.getModel().getRoot()));
-                RMI_FS.setModel(server.getFSModel());
-            }
-        } catch (RemoteException ex) {
-            Logger.getLogger(FSClient.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }//GEN-LAST:event_RMI_FSMouseMoved
 
 /**
  * @param args the command line arguments
