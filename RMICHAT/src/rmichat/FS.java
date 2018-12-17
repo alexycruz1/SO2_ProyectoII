@@ -23,22 +23,31 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.JTree;
 import javax.swing.tree.DefaultTreeModel;
 
 public class FS extends UnicastRemoteObject implements FS_Interface {
 
     public String name;
     public DefaultTreeModel FS;
+    public JTree FSTree;
     public FS_Interface client = null;
     public ArrayList<FS_Interface> clients = new ArrayList<FS_Interface>();
 
-    public FS(String n, DefaultTreeModel PublicFS) throws RemoteException {
+    public FS(String n, DefaultTreeModel PublicFS, JTree PublicFSTree) throws RemoteException {
         this.name = n;
         this.FS = PublicFS;
+        this.FSTree = PublicFSTree;
     }
 
     public void setFS(DefaultTreeModel FSModel) {
         this.FS = FSModel;
+        if (FSTree != null) {
+            this.FSTree.setModel(FS);
+            this.FS.reload();
+            
+            System.out.println("HOLA PRRO");
+        }
     }
 
     public String getName() throws RemoteException {

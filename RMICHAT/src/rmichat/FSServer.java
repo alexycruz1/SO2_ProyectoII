@@ -38,7 +38,9 @@ public class FSServer {
             String name = "SERVER";
 
             DefaultTreeModel model = (DefaultTreeModel) myChatServer.RMI_FS.getModel();
-            FS server = new FS(name, model);
+            JTree tree = myChatServer.RMI_FS;
+            
+            FS server = new FS(name, model, tree);
 
             //System.setProperty("java.rmi.server.hostname", "192.168.0.100");
             Registry registry = LocateRegistry.createRegistry(8888);

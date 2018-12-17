@@ -21,8 +21,11 @@ import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.event.TreeModelListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreeModel;
+import javax.swing.tree.TreePath;
 import org.apache.commons.io.FileUtils;
 
 /**
@@ -40,7 +43,7 @@ public class FSClient extends javax.swing.JFrame {
         try {
             String name = JOptionPane.showInputDialog(this, "Enter client name", "INICIANDO CLIENTE", JOptionPane.INFORMATION_MESSAGE);
 
-            client = new FS(name, null);
+            client = new FS(name, null, null);
             //registry = LocateRegistry.getRegistry("192.168.0.102", 8888);
             registry = LocateRegistry.getRegistry(8888);
             server = (FS_Interface) registry.lookup("ejemplo");
@@ -50,9 +53,11 @@ public class FSClient extends javax.swing.JFrame {
             server.addClient(client);
 
             RMI_FS.setModel(server.getFSModel());
+
             ArrayList<FS_Interface> clients = server.getClients();
             for (int i = 0; i < clients.size(); i++) {
                 clients.get(i).setFS(server.getFSModel());
+                clients.get(i).getFSModel().reload();
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Server failed!", "INICIANDO CLIENTE", JOptionPane.ERROR_MESSAGE);
@@ -161,6 +166,11 @@ public class FSClient extends javax.swing.JFrame {
 
         javax.swing.tree.DefaultMutableTreeNode treeNode1 = new javax.swing.tree.DefaultMutableTreeNode("Our Local Disk C");
         RMI_FS.setModel(new javax.swing.tree.DefaultTreeModel(treeNode1));
+        RMI_FS.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseMoved(java.awt.event.MouseEvent evt) {
+                RMI_FSMouseMoved(evt);
+            }
+        });
         RMI_FS.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 RMI_FSMouseClicked(evt);
@@ -215,6 +225,8 @@ public class FSClient extends javax.swing.JFrame {
                     ArrayList<FS_Interface> clients = server.getClients();
                     for (int i = 0; i < clients.size(); i++) {
                         clients.get(i).setFS(server.getFSModel());
+                        clients.get(i).getFSModel().reload();
+
                     }
                 } catch (RemoteException ex) {
                     Logger.getLogger(FSClient.class.getName()).log(Level.SEVERE, null, ex);
@@ -244,6 +256,7 @@ public class FSClient extends javax.swing.JFrame {
                     ArrayList<FS_Interface> clients = server.getClients();
                     for (int i = 0; i < clients.size(); i++) {
                         clients.get(i).setFS(server.getFSModel());
+                        clients.get(i).getFSModel().reload();
                     }
                 } catch (RemoteException ex) {
                     Logger.getLogger(FSClient.class.getName()).log(Level.SEVERE, null, ex);
@@ -275,6 +288,7 @@ public class FSClient extends javax.swing.JFrame {
                     ArrayList<FS_Interface> clients = server.getClients();
                     for (int i = 0; i < clients.size(); i++) {
                         clients.get(i).setFS(server.getFSModel());
+                        clients.get(i).getFSModel().reload();
                     }
                 } catch (RemoteException ex) {
                     Logger.getLogger(FSClient.class.getName()).log(Level.SEVERE, null, ex);
@@ -306,12 +320,12 @@ public class FSClient extends javax.swing.JFrame {
 
             if (!file.exists() && !"".equals(DirectoryName)) {
                 try {
-                    //new File(DirPath + DirectoryName).mkdirs();
                     server.createDirectory(DirPath, DirectoryName);
                     RMI_FS.setModel(server.getFSModel());
                     ArrayList<FS_Interface> clients = server.getClients();
                     for (int i = 0; i < clients.size(); i++) {
                         clients.get(i).setFS(server.getFSModel());
+                        clients.get(i).getFSModel().reload();
                     }
                 } catch (RemoteException ex) {
                     Logger.getLogger(FSClient.class.getName()).log(Level.SEVERE, null, ex);
@@ -499,10 +513,22 @@ public class FSClient extends javax.swing.JFrame {
         }*/
     }//GEN-LAST:event_FS_DeleteActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
+    private void RMI_FSMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_RMI_FSMouseMoved
+        try {
+            // TODO add your handling code here:
+            if(getNumberOfNodes(RMI_FS.getModel(), RMI_FS.getModel().getRoot()) < getNumberOfNodes(server.getFSModel(), server.getFSModel().getRoot())) {
+                //System.out.println("Child count: " + getNumberOfNodes(RMI_FS.getModel(), RMI_FS.getModel().getRoot()));
+                RMI_FS.setModel(server.getFSModel());
+            }
+        } catch (RemoteException ex) {
+            Logger.getLogger(FSClient.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_RMI_FSMouseMoved
+
+/**
+ * @param args the command line arguments
+ */
+public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -513,16 +539,28 @@ public class FSClient extends javax.swing.JFrame {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
-                }
+                
+
+}
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(FSClient.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(FSClient.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(FSClient.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(FSClient.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FSClient.class
+.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        
+
+} catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(FSClient.class
+.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        
+
+} catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(FSClient.class
+.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        
+
+} catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(FSClient.class
+.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
         //</editor-fold>
@@ -601,5 +639,14 @@ public class FSClient extends javax.swing.JFrame {
                 model.reload();
             }
         }
+    }
+    
+    public int getNumberOfNodes(TreeModel model, Object node) {
+        int count = 1;
+        int nChildren = model.getChildCount(node);
+        for (int i = 0; i < nChildren; i++) {
+            count += getNumberOfNodes(model, model.getChild(node, i));
+        }
+        return count;
     }
 }
