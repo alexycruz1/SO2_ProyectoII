@@ -37,7 +37,7 @@ public class FSClient extends javax.swing.JFrame {
         initComponents();
 
         try {
-            String name = JOptionPane.showInputDialog(this, "Enter client name", "INICIANDO CLIENTE", JOptionPane.INFORMATION_MESSAGE);
+            name = JOptionPane.showInputDialog(this, "Enter client name", "INICIANDO CLIENTE", JOptionPane.INFORMATION_MESSAGE);
 
             client = new FS(name, null);
             //registry = LocateRegistry.getRegistry("192.168.0.102", 8888);
@@ -92,6 +92,7 @@ public class FSClient extends javax.swing.JFrame {
         FileContent_Close = new javax.swing.JMenuItem();
         jScrollPane1 = new javax.swing.JScrollPane();
         RMI_FS = new javax.swing.JTree();
+        jButton1 = new javax.swing.JButton();
 
         FS_OpenFile.setText("Open File");
         FS_OpenFile.addActionListener(new java.awt.event.ActionListener() {
@@ -175,20 +176,34 @@ public class FSClient extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(RMI_FS);
 
+        jButton1.setText("Desmontar FS");
+        jButton1.setName("DesmontarFS"); // NOI18N
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 606, Short.MAX_VALUE)
+                .addComponent(jScrollPane1)
                 .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(513, Short.MAX_VALUE)
+                .addComponent(jButton1)
+                .addGap(35, 35, 35))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 483, Short.MAX_VALUE)
+                .addGap(23, 23, 23)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 413, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
+                .addComponent(jButton1)
                 .addContainerGap())
         );
 
@@ -217,8 +232,10 @@ public class FSClient extends javax.swing.JFrame {
 
             if (!"".equals(FileName)) {
                 try {
-                    server.createFile(file);
-                    RMI_FS.setModel(server.getFSModel());
+                    if(!close){
+                        server.createFile(file);
+                        RMI_FS.setModel(server.getFSModel());
+                    }
                 } catch (RemoteException ex) {
                     Logger.getLogger(FSClient.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -242,8 +259,10 @@ public class FSClient extends javax.swing.JFrame {
 
             if (!"".equals(FileName)) {
                 try {
-                    server.createFile(file);
-                    RMI_FS.setModel(server.getFSModel());
+                    if(!close){
+                        server.createFile(file);
+                        RMI_FS.setModel(server.getFSModel());
+                    }
                 } catch (RemoteException ex) {
                     Logger.getLogger(FSClient.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -269,8 +288,10 @@ public class FSClient extends javax.swing.JFrame {
             if (!file.exists() && !"".equals(DirectoryName)) {
                 try {
                     //new File(rootDir + DirectoryName).mkdirs();
+                    if(!close){
                     server.createDirectory(rootDir, DirectoryName);
                     RMI_FS.setModel(server.getFSModel());
+                    }
                 } catch (RemoteException ex) {
                     Logger.getLogger(FSClient.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -302,8 +323,10 @@ public class FSClient extends javax.swing.JFrame {
             if (!file.exists() && !"".equals(DirectoryName)) {
                 try {
                     //new File(DirPath + DirectoryName).mkdirs();
-                    server.createDirectory(DirPath, DirectoryName);
-                    RMI_FS.setModel(server.getFSModel());
+                    if(!close){
+                        server.createDirectory(DirPath, DirectoryName);
+                        RMI_FS.setModel(server.getFSModel());
+                    }
                 } catch (RemoteException ex) {
                     Logger.getLogger(FSClient.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -419,6 +442,17 @@ public class FSClient extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_FS_DeleteActionPerformed
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        try {
+            // TODO add your handling code here:
+            server.disconnectClient(name);
+            client.disconnectClient(name);
+            close = true;
+        } catch (RemoteException ex) {
+            Logger.getLogger(FSClient.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -465,6 +499,7 @@ public class FSClient extends javax.swing.JFrame {
     private javax.swing.JMenuItem FileContent_Save;
     private javax.swing.JMenu Menu_FileContent;
     private javax.swing.JTree RMI_FS;
+    private javax.swing.JButton jButton1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JDialog jd_File;
@@ -477,6 +512,8 @@ public class FSClient extends javax.swing.JFrame {
     FS_Interface client;
     Registry registry;
     FS_Interface server;
+    String name = "";
+    boolean close = false;
 
     public void scanFS() throws InterruptedException {
         File currentDir = new File(rootDir);

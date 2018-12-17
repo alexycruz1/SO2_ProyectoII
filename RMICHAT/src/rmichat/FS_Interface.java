@@ -31,4 +31,6 @@ public interface FS_Interface extends Remote {
     public void createDirectory(String Address, String DirectoryName) throws RemoteException;
     
     public void createFile(File newFile) throws RemoteException;
+    
+    public void disconnectClient(String name) throws RemoteException;
 }

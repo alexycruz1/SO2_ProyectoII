@@ -69,4 +69,19 @@ public class FS extends UnicastRemoteObject implements FS_Interface {
             Logger.getLogger(FS.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    public void disconnectClient(String name){
+        System.out.println("Si entro! "+ name+ " Size: "+clients.size());
+        
+        try{
+            for (int i = 0; i < clients.size(); i++) {
+                if(clients.get(i).getName().equals(name)){
+                    clients.remove(i);
+                    System.out.println("Se desmonto correctamente!");
+                }
+            }
+        } catch (Exception e) {
+            
+        }
+    }
 }
