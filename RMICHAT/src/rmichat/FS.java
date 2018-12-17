@@ -99,9 +99,9 @@ public class FS extends UnicastRemoteObject implements FS_Interface {
     }
 
     public boolean isFile(String filePath) {
-        final Path path = Paths.get(filePath);
+        File archivo = new File(filePath);
 
-        return !Files.isExecutable(path);
+        return archivo.isFile();
     }
 
     public void saveContent(String filePath, String fileContent) {
@@ -138,10 +138,11 @@ public class FS extends UnicastRemoteObject implements FS_Interface {
                 if(clients.get(i).getName().equals(name)){
                     clients.remove(i);
                     System.out.println("Se desmonto correctamente: "+name);
+                    break;
                 }
             }
         } catch (RemoteException ex) {
-            Logger.getLogger(FS.class.getName()).log(Level.SEVERE, null, ex);
+            //Logger.getLogger(FS.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }

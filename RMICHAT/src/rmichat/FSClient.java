@@ -44,8 +44,8 @@ public class FSClient extends javax.swing.JFrame {
             name = JOptionPane.showInputDialog(this, "Enter client name", "INICIANDO CLIENTE", JOptionPane.INFORMATION_MESSAGE);
 
             client = new FS(name, null, null);
-            //registry = LocateRegistry.getRegistry("192.168.0.102", 8888);
-            registry = LocateRegistry.getRegistry(8888);
+            registry = LocateRegistry.getRegistry("192.168.0.102", 8888);
+            //registry = LocateRegistry.getRegistry(8888);
             server = (FS_Interface) registry.lookup("ejemplo");
 
             String msg = "[" + client.getName() + "] conectado!";
@@ -54,11 +54,11 @@ public class FSClient extends javax.swing.JFrame {
 
             RMI_FS.setModel(server.getFSModel());
 
-            ArrayList<FS_Interface> clients = server.getClients();
+            /*ArrayList<FS_Interface> clients = server.getClients();
             for (int i = 0; i < clients.size(); i++) {
                 clients.get(i).setFS(server.getFSModel());
                 clients.get(i).getFSModel().reload();
-            }
+            }*/
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Server failed!", "INICIANDO CLIENTE", JOptionPane.ERROR_MESSAGE);
             JOptionPane.showMessageDialog(this, e, "INICIANDO CLIENTE", JOptionPane.ERROR_MESSAGE);
@@ -235,11 +235,11 @@ public class FSClient extends javax.swing.JFrame {
                     if(!close){
                         server.createFile(file);
                         RMI_FS.setModel(server.getFSModel());
-                        ArrayList<FS_Interface> clients = server.getClients();
+                        /*ArrayList<FS_Interface> clients = server.getClients();
                         for (int i = 0; i < clients.size(); i++) {
                             clients.get(i).setFS(server.getFSModel());
                             clients.get(i).getFSModel().reload();
-                        }
+                        }*/
                     }
                 } catch (RemoteException ex) {
                     Logger.getLogger(FSClient.class.getName()).log(Level.SEVERE, null, ex);
@@ -301,11 +301,11 @@ public class FSClient extends javax.swing.JFrame {
                         //new File(rootDir + DirectoryName).mkdirs();
                         server.createDirectory(rootDir, DirectoryName);
                         RMI_FS.setModel(server.getFSModel());
-                        ArrayList<FS_Interface> clients = server.getClients();
+                        /*ArrayList<FS_Interface> clients = server.getClients();
                         for (int i = 0; i < clients.size(); i++) {
                             clients.get(i).setFS(server.getFSModel());
                             clients.get(i).getFSModel().reload();
-                        }
+                        }*/
                     }
                 } catch (RemoteException ex) {
                     Logger.getLogger(FSClient.class.getName()).log(Level.SEVERE, null, ex);
@@ -340,11 +340,11 @@ public class FSClient extends javax.swing.JFrame {
                     if(!close){
                         server.createDirectory(DirPath, DirectoryName);
                         RMI_FS.setModel(server.getFSModel());
-                        ArrayList<FS_Interface> clients = server.getClients();
+                        /*ArrayList<FS_Interface> clients = server.getClients();
                         for (int i = 0; i < clients.size(); i++) {
                             clients.get(i).setFS(server.getFSModel());
                             clients.get(i).getFSModel().reload();
-                        }
+                        }*/
                     }
                 } catch (RemoteException ex) {
                     Logger.getLogger(FSClient.class.getName()).log(Level.SEVERE, null, ex);
@@ -369,16 +369,17 @@ public class FSClient extends javax.swing.JFrame {
         for (int i = 0; i < paths.length; i++) {
             DirPath += paths[i];
             if (i + 1 < paths.length) {
-                DirPath += File.separator;
+                DirPath += "/";
             }
         }
 
         final Path path = Paths.get(DirPath);
         actualDir = DirPath;
+        DirPathInServer = DirPath;
 
         try {
-            if(!close){
-                if (server.isFile(DirPath)) {
+            if(true){
+                if (true) {
                     String FileContent = "";
 
                     File cacheDirectory = new File(cacheDir);
@@ -478,6 +479,7 @@ public class FSClient extends javax.swing.JFrame {
                     }
 
                     jta_FileContent.setText(server.getFileContent(DirPath));
+                    openedFileContent = server.getFileContent(DirPath);
 
                     jd_File.setModal(true);
                     jd_File.pack();
@@ -496,6 +498,8 @@ public class FSClient extends javax.swing.JFrame {
         try {
             if(!close){
                 server.changeInitFile(client.getName(), initFile);
+                System.out.println(actualDir);
+                server.saveContent(actualDir, openedFileContent);
             }
         } catch (RemoteException ex) {
             Logger.getLogger(FSClient.class.getName()).log(Level.SEVERE, null, ex);
@@ -598,7 +602,7 @@ public static void main(String args[]) {
     private javax.swing.JTextArea jta_FileContent;
     // End of variables declaration//GEN-END:variables
     DefaultMutableTreeNode nodo_seleccionado;
-    String actualDir = "", rootDir = "./Our Local Disk C/", cacheDir = "./cache/", initFile = "", openedFile = "";
+    String actualDir = "", rootDir = "./Our Local Disk C", cacheDir = "./cache/", initFile = "", openedFile = "", openedFileContent = "", DirPathInServer = "";
 
     FS_Interface client;
     Registry registry;
